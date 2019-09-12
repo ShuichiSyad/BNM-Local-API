@@ -15,8 +15,13 @@ class BankBaseRateController extends Controller
     }
 
     public function fetch($bank_code){
-        $bank_base_rate = BankBaseRate::find($bank_code)->first();
-
+        $bank_base_rate = BankBaseRate::find($bank_code);
+        
+        if (empty($bank_base_rate)){
+            return response()->json(['message' => 'No such bank code found!'], 404);
+        }
+        $bank_base_rate = $bank_base_rate->first();
+        
         return new BankBaseRateResource($bank_base_rate);
     }
 }
